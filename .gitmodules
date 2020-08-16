@@ -1,0 +1,6 @@
+[submodule "lib/libft"]
+	path = lib/libft
+	url = https://github.com/AlexeyBukin/libft.git
+[submodule "lib/libmlx"]
+	path = lib/libmlx
+	url = https://github.com/AlexeyBukin/minilibx_macos.git
