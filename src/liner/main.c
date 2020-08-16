@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 10:18:44 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/16 08:21:10 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/16 10:35:02 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 typedef struct		s_liner
 {
 	t_mgx			*mgx;
-	t_int2			last_click;// = (t_int2){-1, -1};
+	t_int2			last_click;
+	int				is_drawing;
 }					t_liner;
 
 //int		draw_line(t_mgx_win *win, t_rect line)
@@ -28,8 +29,7 @@ typedef struct		s_liner
 int		liner_loop(void *liner_ptr)
 {
 	t_liner		*liner;
-//	t_int2		pos;
-//	t_rect		line;
+	t_rect		line;
 	t_mgx		*mgx;
 
 	if ((liner = (t_liner*)liner_ptr) == NULL)
@@ -43,47 +43,31 @@ int		liner_loop(void *liner_ptr)
 		ft_printf("pressed X button, exiting...\n");
 		exit(0);
 	}
-	if (mgx_mouse_clicked_left(mgx->win_active))
+	if (mgx_mouse_clicked_right(mgx->win_active) && liner->is_drawing == TRUE)
 	{
-		liner->last_click.x = mgx->win_active->input.mouse.x;
-		liner->last_click.y = mgx->win_active->input.mouse.y;
-		mgx_pixel_put(mgx->win_active->bufs,
-				(t_size2){liner->last_click.x, liner->last_click.y},
-				(t_pixel){255, 255, 255, 255});
-		ft_printf("just clicked left!\n");
-		mgx_win_draw(mgx->win_active);
+		mgx_buf_clear(mgx->win_active->bufs);
+		liner->is_drawing = FALSE;
 	}
-//	else if (mgx_mouse_pressed_left(mgx->win_active))
-//	{
-//		win_buf_clear(get_win_buf(mgx->win_active, 2));
-//	}
-//	ft_printf("exiting...\n");
-//	exit(0);
-//	// not required as we do not dereference 'win' pointer directly
-//	if ((win = mgx->win_active) == NULL)
-//		return (-1);
-//	if (just_clicked_left(mgx->win_active))
-//	{
-//		(t_liner*)liner->last_click = get_mouse_coords(mgx->win_active);
-//	}
-//	else if (is_pressed_left(mgx->win_active))
-//	{
-//		win_buf_clear(get_win_buf(mgx->win_active, 2));
-//		pos = (t_liner*)liner->last_click;
-//		line.x1 = pos.x;
-//		line.y1 = pos.y;
-//		pos = get_mouse_coords(mgx->win_active);
-//		line.x2 = pos.x;
-//		line.y2 = pos.y;
-//		draw_line(get_win_buf(mgx->win_active, 2), line);
-//	}
-//	else if (is_pressed_left(mgx->win_active))
-//	{
-//		win_buf_transfer(get_win_buf(mgx->win_active, 1), get_win_buf(mgx->win_active, 2))
-////		same as
-////		win_buf_transfer(mgx->win_active->bufs, get_win_buf(mgx->win_active, 2))
-//		(t_liner*)liner->last_click = (t_int2){-1, -1};
-//	}
+	if (mgx_mouse_clicked_left(mgx->win_active) && liner->is_drawing == FALSE)
+	{
+		liner->last_click = mgx->win_active->input.mouse.pos;
+		liner->is_drawing = TRUE;
+	}
+	else if (mgx_mouse_pressed_left(mgx->win_active) && liner->is_drawing == TRUE)
+	{
+		mgx_buf_clear(mgx->win_active->bufs);
+		line.p1 = liner->last_click;
+		line.p2 = mgx->win_active->input.mouse.pos;
+		mgx_draw_line(mgx->win_active->bufs, line);
+	}
+	else if (mgx_mouse_released_left(mgx->win_active) && liner->is_drawing == TRUE)
+	{
+		mgx_buf_merge(mgx_get_win_buf(mgx->win_active, 2), mgx->win_active->bufs);
+		mgx_buf_clear(mgx->win_active->bufs);
+		liner->is_drawing = FALSE;
+	}
+	mgx_buf_merge(mgx->win_active->bufs, mgx_get_win_buf(mgx->win_active, 2));
+	mgx_win_draw(mgx->win_active);
 	return (0);
 }
 

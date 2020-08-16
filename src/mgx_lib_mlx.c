@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 07:54:27 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/16 08:03:57 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/16 09:59:11 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ int			mgx_mlx_mouse_release(int button_mlx, int x, int y, void *input_ptr)
 
 	if ((input = (t_mgx_input*)input_ptr) == NULL)
 		return (-1);
-	input->mouse.x = x;
-	input->mouse.y = y;
+	input->mouse.pos = (t_int2){x, y};
 	if (mgx_mouse_set_mlx_button(&(input->mouse.buttons), button_mlx, FALSE))
 		return (-1);
 	return (0);
@@ -31,8 +30,7 @@ int			mgx_mlx_mouse_move(int x, int y, void *input_ptr)
 
 	if ((input = (t_mgx_input*)input_ptr) == NULL)
 		return (-1);
-	input->mouse.x = x;
-	input->mouse.y = y;
+	input->mouse.pos = (t_int2){x, y};
 	return (0);
 }
 
@@ -42,8 +40,7 @@ int			mgx_mlx_mouse_press(int button_mlx, int x, int y, void *input_ptr)
 
 	if ((input = (t_mgx_input*)input_ptr) == NULL)
 		return (-1);
-	input->mouse.x = x;
-	input->mouse.y = y;
+	input->mouse.pos = (t_int2){x, y};
 	if (mgx_mouse_set_mlx_button(&(input->mouse.buttons), button_mlx, TRUE))
 		return (-1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 07:11:19 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/16 07:56:07 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/16 09:58:32 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,9 @@ typedef struct		s_m_buttons
 
 typedef struct		s_mouse
 {
-	int				x;
-	int				y;
-	int				x_old;
-	int 			y_old;
-	int				x_move;
-	int				y_move;
+	t_int2			pos;
+	t_int2			pos_old;
+	t_int2			move;
 	t_m_buttons		buttons;
 	t_m_buttons		buttons_old;
 }					t_mouse;

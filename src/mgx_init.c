@@ -16,8 +16,6 @@
 ** Initialization
 */
 
-//int			mgx_init(char *appname, t_size2 size, void *loop_data, t_mgx **mgx_ptr)
-
 int			mgx_init(char *appname, t_size2 size, t_mgx **mgx_ptr)
 {
 	t_mgx			*mgx;

@@ -25,8 +25,10 @@ SRC_FILES = \
 src/buf/mgx_buf.c \
 src/mgx_free.c \
 src/mgx_init.c \
+src/mgx_lib_mlx.c \
 src/mgx_loop.c \
 src/win/mgx_win_buf.c \
+src/win/mgx_win_draw.c \
 src/win/mgx_win_init.c
 
 O_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRC_FILES))

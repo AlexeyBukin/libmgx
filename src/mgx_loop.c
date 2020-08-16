@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:41:58 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/16 08:08:25 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/16 10:22:44 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int				mgx_input_mouse_move_update(t_mgx_win *wl)
 {
 	while (wl != NULL)
 	{
-		wl->input.mouse.x_move = wl->input.mouse.x - wl->input.mouse.x_old;
-		wl->input.mouse.y_move = wl->input.mouse.y - wl->input.mouse.y_old;
+		wl->input.mouse.move.x = wl->input.mouse.pos.x - wl->input.mouse.pos_old.x;
+		wl->input.mouse.move.y = wl->input.mouse.pos.y - wl->input.mouse.pos_old.y;
 		wl = wl->next;
 	}
 	return (0);
@@ -38,8 +38,7 @@ int			mgx_input_update(t_mgx_win *win_list)
 //		win_list->input.mouse.buttons_old = win_list->input.mouse.buttons;
 //		win_list->input.mouse.buttons_old = win_list->input.mouse.buttons;
 //		win_list->input.mouse.buttons_old = win_list->input.mouse.buttons;
-		win_list->input.mouse.x_old = win_list->input.mouse.x;
-		win_list->input.mouse.y_old = win_list->input.mouse.y;
+		win_list->input.mouse.pos_old = win_list->input.mouse.pos;// = win_list->input.mouse.y;
 		win_list = win_list->next;
 	}
 //	ft_printf("updated input!\n");
@@ -63,12 +62,30 @@ int			mgx_loop_func(void *mgx_ptr)
 	return (0);
 }
 
+//mgx_mouse_pressed_right
+
+int			mgx_mouse_clicked_right(t_mgx_win *win)
+{
+	if (win == NULL)
+		return (-1);
+	return (win->input.mouse.buttons_old.right == FALSE &&
+			win->input.mouse.buttons.right == TRUE);
+}
+
 int			mgx_mouse_pressed_left(t_mgx_win *win)
 {
 	if (win == NULL)
 		return (-1);
 	return (win->input.mouse.buttons_old.left == TRUE &&
 			win->input.mouse.buttons.left == TRUE);
+}
+
+int			mgx_mouse_released_left(t_mgx_win *win)
+{
+	if (win == NULL)
+		return (-1);
+	return (win->input.mouse.buttons_old.left == TRUE &&
+			win->input.mouse.buttons.left == FALSE);
 }
 
 int			mgx_mouse_clicked_left(t_mgx_win *win)
