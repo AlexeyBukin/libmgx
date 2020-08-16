@@ -1,7 +1,18 @@
-# libmgx Makefile
-# @kcharla, 2020
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/08/16 11:36:42 by kcharla           #+#    #+#              #
+#    Updated: 2020/08/16 11:42:32 by kcharla          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 NAME = libmgx.a
+
+#--------------------------------   GENERAL   ---------------------------------#
 
 CC = gcc
 
@@ -9,18 +20,32 @@ DEBUG = -g
 OPTIM = -O2
 
 CFLAGS = -Wall -Wextra -Wall $(DEBUG) $(OPTIM)
-CLIBS  = -L ./lib/libft -lft
+CLIBS  = -L ./lib/libft -lft -L. -lmgx -L ./lib/libmlx -lmlx -framework OpenGL -framework AppKit
 INCLUDE = -I ./include -I ./lib/libmlx -I ./lib/libft/include
 
-BUILD_DIR = build
-SRC_DIR = src
+BUILD_DIR := ./build/
+SRC_DIR := ./src
 
-# find include -type f -name '*.h' | sed 'N;N;s/\n/ /g' | sed 's/$/ \\/'| sed '$s/\\//' | column -t
+#--------------------------------   HEADERS   ---------------------------------#
+
+# find include -type f -name '*.h'
 
 HEADER_FILES = \
-include/mgx.h
+include/mgx.h \
+include/mgx_base_s.h \
+include/mgx_free.h \
+include/mgx_input.h \
+include/mgx_libs.h \
+include/mgx_mlx.h \
+include/mgx_mlx_s.h \
+include/mgx_struct.h \
+include/mlx_full.h \
 
-# find src -type f -name '*.c' | sed 'N;N;s/\n/ /g' | sed 's/$/ \\/'| sed '$s/\\//' | column -t
+
+#--------------------------------   SOURCES   ---------------------------------#
+
+# find src -type f -name '*.c'
+
 SRC_FILES = \
 src/buf/mgx_buf.c \
 src/mgx_free.c \
@@ -29,16 +54,17 @@ src/mgx_lib_mlx.c \
 src/mgx_loop.c \
 src/win/mgx_win_buf.c \
 src/win/mgx_win_draw.c \
-src/win/mgx_win_init.c
+src/win/mgx_win_init.c \
+src/buf/mgx_buf_draw_line.c
 
 O_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRC_FILES))
 
-O_FILES_LINER := ./src/liner/main.c
-
-LINER_APP := liner.app
-
 SRC_DIRS = $(shell find $(SRC_DIR) -type d)
 BUILD_DIRS_REC = $(patsubst $(SRC_DIR)%, $(BUILD_DIR)%, $(SRC_DIRS))
+
+.PHONY: all clean fclean re liner
+
+#---------------------------------   RULES   ----------------------------------#
 
 all: $(NAME)
 
@@ -55,6 +81,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
+	@rm -f $(NAME)
 	@echo "make: Done full clean of \`$(NAME)'."
 
 re: fclean all
@@ -63,10 +90,35 @@ re: fclean all
 $(BUILD_DIRS_REC):
 	@mkdir -vp $(BUILD_DIRS_REC)
 
+#----------------------------------  LIB_FT  ----------------------------------#
+
 LIB_FT := ./lib/libft/libft.a
 
 $(LIB_FT):
 	make -C ./lib/libft/
 
-$(LINER_APP): all $(LIB_FT) $(O_FILES_LINER)
-	$(CC) $(CFLAGS) $(INCLUDE) $(CLIBS) -L . -lmgx -L ./lib/libmlx -lmlx -framework OpenGL -framework AppKit $(O_FILES_LINER) -o $@
+#------------------------------------------------------------------------------#
+#--------------------------------- DEMO PART ----------------------------------#
+#------------------------------------------------------------------------------#
+
+DEMO_DIR := ./demo/
+
+$(DEMO_DIR):
+	@mkdir -vp $(DEMO_DIR)
+
+#----------------------------------  LINER   ----------------------------------#
+
+LINER_APP := ./demo/liner.app
+
+LINER_SRCS := ./src/demo/liner.c
+LINER_OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(LINER_SRCS))
+
+$(DEMO_DIR):
+	@mkdir -vp $(BUILD_DIRS_REC)
+
+liner: $(LINER_APP)
+
+$(LINER_APP): all $(LIB_FT) $(LINER_OBJS) $(DEMO_DIR)
+	$(CC) $(CFLAGS) $(INCLUDE) $(CLIBS) $(LINER_OBJS) -o $@
+
+#---------------------------------    END    ----------------------------------#

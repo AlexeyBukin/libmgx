@@ -8,8 +8,9 @@ project(liner.app)
 
 # find src     -type f -name '*.c' | sed 'N;N;s/\n/ /g' |  sed '$s/\\\\\\//' | column -t
 set(${PROJECT_NAME}_SOURCES
+        src/buf/mgx_buf_draw_line.c
         src/buf/mgx_buf.c
-        src/liner/main.c
+        src/demo/liner.c
         src/mgx_free.c
         src/mgx_init.c
         src/mgx_loop.c

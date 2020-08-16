@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 04:58:14 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/16 10:26:43 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/16 10:49:45 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "mgx_mlx.h"
 
 # define PIXEL_WHITE (t_pixel){255, 255, 255, 0}
+# define PIXEL_MAX 255
 
 int				mgx_init(char *appname, t_size2 size, t_mgx **mgx_ptr);
 t_mgx_win		*mgx_win_init(t_mgx *mgx, t_mgx_lib_type libtype, t_size2 size, char *title);
@@ -35,7 +36,8 @@ int				mgx_mouse_released_left(t_mgx_win *win);
 int				mgx_mouse_clicked_right(t_mgx_win *win);
 //int				mgx_mouse_pressed_right(t_mgx_win *win);
 //int				mgx_mouse_released_right(t_mgx_win *win);
-int				mgx_pixel_put(t_pixel_buf *buf, t_size2 coords, t_pixel pixel);
+
+int				mgx_pixel_put(t_pixel_buf *buf, t_int2 coords, t_pixel pixel);
 
 int				mgx_win_draw(t_mgx_win *win);
 t_pixel_buf		*mgx_get_win_buf(t_mgx_win *win, int id);

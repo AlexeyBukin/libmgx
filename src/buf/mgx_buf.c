@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 00:01:58 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/16 10:28:32 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/16 10:57:49 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@
 //	return (buf);
 //}
 
-int				mgx_pixel_put(t_pixel_buf *buf, t_size2 coords, t_pixel pixel)
+int				mgx_pixel_put(t_pixel_buf *buf, t_int2 coords, t_pixel pixel)
 {
 	if (buf == NULL)
 		return (-1);
 	if (buf->buf == NULL)
 		return (-1);
-	if (buf->size.x <= coords.x || buf->size.y <= coords.y)
+	if (coords.x < 0 || coords.y < 0 || coords.x >= (int)buf->size.x || coords.y >= (int)buf->size.y)
 		return (-1);
 	(buf->buf)[coords.y * buf->size.x + coords.x] = pixel;
 	return (0);
@@ -93,13 +93,13 @@ int				mgx_buf_merge(t_pixel_buf *dest, t_pixel_buf *src)
 	return (0);
 }
 
-int				mgx_draw_line(t_pixel_buf *pix_buf, t_rect line)
-{
-	//TODO redpo to normal version
-//	PIXEL_WHITE
-	if (line.x1 < 0 || line.x2 < 0 || line.y1 < 0 || line.y2 < 0)
-		return (-1);
-	mgx_pixel_put(pix_buf, (t_size2){line.x1, line.y1}, PIXEL_WHITE);
-	mgx_pixel_put(pix_buf, (t_size2){line.x2, line.y2}, PIXEL_WHITE);
-	return (0);
-}
+//int				mgx_draw_line(t_pixel_buf *pix_buf, t_rect line)
+//{
+//	//TODO redpo to normal version
+////	PIXEL_WHITE
+//	if (line.x1 < 0 || line.x2 < 0 || line.y1 < 0 || line.y2 < 0)
+//		return (-1);
+//	mgx_pixel_put(pix_buf, (t_size2){line.x1, line.y1}, PIXEL_WHITE);
+//	mgx_pixel_put(pix_buf, (t_size2){line.x2, line.y2}, PIXEL_WHITE);
+//	return (0);
+//}

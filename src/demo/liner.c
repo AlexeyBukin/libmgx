@@ -6,7 +6,7 @@
 /*   By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 10:18:44 by kcharla           #+#    #+#             */
-/*   Updated: 2020/08/16 10:35:02 by kcharla          ###   ########.fr       */
+/*   Updated: 2020/08/16 11:08:52 by kcharla          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@ typedef struct		s_liner
 	int				is_drawing;
 }					t_liner;
 
-//int		draw_line(t_mgx_win *win, t_rect line)
-//{
-//	//draw_line
-//	return (0);
-//}
-//
-
 int		liner_loop(void *liner_ptr)
 {
 	t_liner		*liner;
@@ -34,13 +27,13 @@ int		liner_loop(void *liner_ptr)
 
 	if ((liner = (t_liner*)liner_ptr) == NULL)
 		return (-1);
-	if ((mgx = liner->mgx)== NULL)
+	if ((mgx = liner->mgx) == NULL)
 		return (-1);
 	if (mgx->win_active == NULL)
 		return (-1);
 	if (mgx->win_active->input.close)
 	{
-		ft_printf("pressed X button, exiting...\n");
+		ft_printf("pressed (X) button, exit...\n");
 		exit(0);
 	}
 	if (mgx_mouse_clicked_right(mgx->win_active) && liner->is_drawing == TRUE)
