@@ -29,15 +29,15 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${PROJECT_SOURCE_DIR}/include            )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        ${PROJECT_SOURCE_DIR}/lib/libft/include      )
+        ${PROJECT_SOURCE_DIR}/lib/ft/include      )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        ${PROJECT_SOURCE_DIR}/lib/libmlx      )
+        ${PROJECT_SOURCE_DIR}/lib/mlx      )
 
-add_subdirectory(./lib/libft)
+add_subdirectory(./lib/ft)
 target_link_libraries(${PROJECT_NAME} ft)
 target_link_libraries(${PROJECT_NAME} m)
-target_link_libraries(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/lib/libmlx/libmlx.a)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/lib/mlx/libmlx.a)
 
 find_package(OpenGL REQUIRED)
 include_directories( ${OPENGL_INCLUDE_DIRS} )
