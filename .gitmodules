@@ -4,3 +4,9 @@
 [submodule "lib/libmlx"]
 	path = lib/libmlx
 	url = https://github.com/AlexeyBukin/minilibx_macos.git
+[submodule "lib/ft"]
+	path = lib/ft
+	url = https://github.com/AlexeyBukin/libft.git
+[submodule "lib/mlx"]
+	path = lib/mlx
+	url = https://github.com/AlexeyBukin/minilibx_macos.git

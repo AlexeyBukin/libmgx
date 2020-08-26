@@ -6,7 +6,7 @@
 #    By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/16 11:36:42 by kcharla           #+#    #+#              #
-#    Updated: 2020/08/16 11:42:32 by kcharla          ###   ########.fr        #
+#    Updated: 2020/08/26 06:02:33 by u18600003        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,11 @@ DEBUG = -g
 OPTIM = -O2
 
 CFLAGS = -Wall -Wextra -Wall $(DEBUG) $(OPTIM)
-CLIBS  = -L ./lib/libft -lft -L. -lmgx -L ./lib/libmlx -lmlx -framework OpenGL -framework AppKit
-INCLUDE = -I ./include -I ./lib/libmlx -I ./lib/libft/include
+CLIBS  = -L ./lib/ft -lft -L. -lmgx -L ./lib/mlx -lmlx -framework OpenGL -framework AppKit
+INCLUDE = -I ./include -I ./lib/mlx -I ./lib/ft/include
 
-BUILD_DIR := ./build/
-SRC_DIR := ./src
+BUILD_DIR := build
+SRC_DIR := src
 
 #--------------------------------   HEADERS   ---------------------------------#
 
@@ -92,10 +92,17 @@ $(BUILD_DIRS_REC):
 
 #----------------------------------  LIB_FT  ----------------------------------#
 
-LIB_FT := ./lib/libft/libft.a
+LIB_FT := ./lib/ft/libft.a
 
 $(LIB_FT):
-	make -C ./lib/libft/
+	make -C ./lib/ft/
+
+#---------------------------------  LIB_MLX  ----------------------------------#
+
+LIB_MLX := ./lib/mlx/libmlx.a
+
+$(LIB_MLX):
+	make -C ./lib/mlx
 
 #------------------------------------------------------------------------------#
 #--------------------------------- DEMO PART ----------------------------------#
@@ -113,12 +120,9 @@ LINER_APP := ./demo/liner.app
 LINER_SRCS := ./src/demo/liner.c
 LINER_OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(LINER_SRCS))
 
-$(DEMO_DIR):
-	@mkdir -vp $(BUILD_DIRS_REC)
-
 liner: $(LINER_APP)
 
-$(LINER_APP): all $(LIB_FT) $(LINER_OBJS) $(DEMO_DIR)
+$(LINER_APP): $(NAME) $(LIB_FT) $(LIB_MLX) $(LINER_OBJS) $(DEMO_DIR)
 	$(CC) $(CFLAGS) $(INCLUDE) $(CLIBS) $(LINER_OBJS) -o $@
 
 #---------------------------------    END    ----------------------------------#
