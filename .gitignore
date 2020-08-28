@@ -1,9 +1,17 @@
 build
+build/
+./build
+
 cmake-build-debug*
 cmake-build-debug/
 *cmake-build-debug*
 .DS_Store
 .idea
+
+inc/libft.h
+inc/printf.h
+inc/mlx.h
+inc/mlx_int.h
 
 !.gitignore
 !.gitmodules
@@ -32,7 +40,7 @@ cmake-build-debug/
 *.la
 *.lo
 
-# Shared objects (inc. Windows DLLs)
+# Shared objects (include. Windows DLLs)
 *.dll
 *.so
 *.so.*

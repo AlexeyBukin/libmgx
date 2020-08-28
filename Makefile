@@ -6,7 +6,7 @@
 #    By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/16 11:36:42 by kcharla           #+#    #+#              #
-#    Updated: 2020/08/26 06:02:33 by u18600003        ###   ########.fr        #
+#    Updated: 2020/08/28 14:42:31 by u18600003        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,33 +14,35 @@ NAME = libmgx.a
 
 #--------------------------------   GENERAL   ---------------------------------#
 
-CC = gcc
+CC			 = gcc
 
-DEBUG = -g
-OPTIM = -O2
+DEBUG		 = -g
+OPTIM		 = -O2
 
-CFLAGS = -Wall -Wextra -Wall $(DEBUG) $(OPTIM)
-CLIBS  = -L ./lib/ft -lft -L. -lmgx -L ./lib/mlx -lmlx -framework OpenGL -framework AppKit
-INCLUDE = -I ./include -I ./lib/mlx -I ./lib/ft/include
+CFLAGS		 = -Wall -Wextra -Wall $(DEBUG) $(OPTIM)
+CLIBS		:= -L. -lmgx -framework OpenGL -framework AppKit
+INCLUDE		:= -I ./inc
 
-BUILD_DIR := build
-SRC_DIR := src
+BUILD_DIR   := build/
+SRC_DIR     := src/
 
 #--------------------------------   HEADERS   ---------------------------------#
 
 # find include -type f -name '*.h'
 
 HEADER_FILES = \
-include/mgx.h \
-include/mgx_base_s.h \
-include/mgx_free.h \
-include/mgx_input.h \
-include/mgx_libs.h \
-include/mgx_mlx.h \
-include/mgx_mlx_s.h \
-include/mgx_struct.h \
-include/mlx_full.h \
+inc/mgx.h \
+inc/mgx_base_s.h \
+inc/mgx_free.h \
+inc/mgx_input.h \
+inc/mgx_libs.h \
+inc/mgx_mlx.h \
+inc/mgx_mlx_s.h \
+inc/mgx_struct.h \
+inc/mlx_full.h \
 
+LIB_FT		:= ./lib/ft/libft.a
+LIB_MLX		:= ./lib/mlx/libmlx.a
 
 #--------------------------------   SOURCES   ---------------------------------#
 
@@ -57,30 +59,41 @@ src/win/mgx_win_draw.c \
 src/win/mgx_win_init.c \
 src/buf/mgx_buf_draw_line.c
 
-O_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRC_FILES))
+EXTERNAL_HEADERS = \
+./lib/ft/inc/libft.h ./lib/ft/inc/printf.h \
+./lib/mlx/inc/mlx.h ./lib/mlx/inc/mlx_int.h \
+
+LINKED_HEADERS_1 = $(EXTERNAL_HEADERS:./lib/ft/%=%)
+LINKED_HEADERS = $(LINKED_HEADERS_1:./lib/mlx/%=%)
+
+O_FILES = $(patsubst $(SRC_DIR)%.c, $(BUILD_DIR)%.o, $(SRC_FILES))
 
 SRC_DIRS = $(shell find $(SRC_DIR) -type d)
 BUILD_DIRS_REC = $(patsubst $(SRC_DIR)%, $(BUILD_DIR)%, $(SRC_DIRS))
 
-.PHONY: all clean fclean re liner
+.PHONY: all clean fclean re liner headers
 
 #---------------------------------   RULES   ----------------------------------#
 
 all: $(NAME)
 
-$(NAME): $(BUILD_DIRS_REC) $(O_FILES)
-	ar rc $(NAME) $(O_FILES)
+$(NAME): headers $(LIB_FT) $(LIB_MLX) $(BUILD_DIRS_REC) $(O_FILES)
+	libtool -static -o $(NAME) $(LIB_FT) $(LIB_MLX) $(O_FILES)
 	ranlib $(NAME)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER_FILES)
+$(BUILD_DIR)%.o: $(SRC_DIR)%.c $(HEADER_FILES)
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
+	@make clean -C ./lib/ft
+	@make clean -C ./lib/mlx
 	@rm -rf $(BUILD_DIR)
 	@echo "make: Done clean of \`$(NAME)'."
 
 fclean: clean
-	@rm -f $(NAME)
+	@make fclean -C ./lib/ft
+	@make fclean -C ./lib/mlx
+	@rm -f $(LINKED_HEADERS)
 	@rm -f $(NAME)
 	@echo "make: Done full clean of \`$(NAME)'."
 
@@ -90,19 +103,18 @@ re: fclean all
 $(BUILD_DIRS_REC):
 	@mkdir -vp $(BUILD_DIRS_REC)
 
-#----------------------------------  LIB_FT  ----------------------------------#
+headers:
+	ln -f $(EXTERNAL_HEADERS) ./inc/
 
-LIB_FT := ./lib/ft/libft.a
+#----------------------------------  LIB_FT  ----------------------------------#
 
 $(LIB_FT):
 	make -C ./lib/ft/
 
 #---------------------------------  LIB_MLX  ----------------------------------#
 
-LIB_MLX := ./lib/mlx/libmlx.a
-
 $(LIB_MLX):
-	make -C ./lib/mlx
+	make -C ./lib/mlx/
 
 #------------------------------------------------------------------------------#
 #--------------------------------- DEMO PART ----------------------------------#

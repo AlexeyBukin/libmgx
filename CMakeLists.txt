@@ -23,18 +23,15 @@ set(${PROJECT_NAME}_SOURCES
 add_executable(${PROJECT_NAME}  ${${PROJECT_NAME}_SOURCES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        ${SDL2_INCLUDE_DIR}                      )
+        ${PROJECT_SOURCE_DIR}/inc					)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        ${PROJECT_SOURCE_DIR}/include            )
+		${PROJECT_SOURCE_DIR}/lib/ft/include)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        ${PROJECT_SOURCE_DIR}/lib/ft/include      )
+        ${PROJECT_SOURCE_DIR}/lib/mlx				)
 
-target_include_directories(${PROJECT_NAME} PUBLIC
-        ${PROJECT_SOURCE_DIR}/lib/mlx      )
-
-add_subdirectory(./lib/ft)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/ft)
 target_link_libraries(${PROJECT_NAME} ft)
 target_link_libraries(${PROJECT_NAME} m)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/lib/mlx/libmlx.a)
