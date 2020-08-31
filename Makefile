@@ -6,7 +6,7 @@
 #    By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/16 11:36:42 by kcharla           #+#    #+#              #
-#    Updated: 2020/08/28 14:42:31 by u18600003        ###   ########.fr        #
+#    Updated: 2020/08/31 21:12:58 by kcharla          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,36 +28,25 @@ SRC_DIR     := src/
 
 #--------------------------------   HEADERS   ---------------------------------#
 
-# find include -type f -name '*.h'
+# find inc -type f -name '*.h' | sort | column -c 100 | sed 's/$/ \\\\/'
 
 HEADER_FILES = \
-inc/mgx.h \
-inc/mgx_base_s.h \
-inc/mgx_free.h \
-inc/mgx_input.h \
-inc/mgx_libs.h \
-inc/mgx_mlx.h \
-inc/mgx_mlx_s.h \
-inc/mgx_struct.h \
-inc/mlx_full.h \
+inc/mgx.h               inc/mgx_input.h         inc/mgx_mlx_s.h \
+inc/mgx_base_s.h        inc/mgx_libs.h          inc/mgx_struct.h \
+inc/mgx_free.h          inc/mgx_mlx.h           inc/mlx_full.h
 
 LIB_FT		:= ./lib/ft/libft.a
 LIB_MLX		:= ./lib/mlx/libmlx.a
 
 #--------------------------------   SOURCES   ---------------------------------#
 
-# find src -type f -name '*.c'
+# find src -type f -name '*.c' | sort | column -c 100 | sed 's/$/ \\\\/'
 
 SRC_FILES = \
-src/buf/mgx_buf.c \
-src/mgx_free.c \
-src/mgx_init.c \
-src/mgx_lib_mlx.c \
-src/mgx_loop.c \
-src/win/mgx_win_buf.c \
-src/win/mgx_win_draw.c \
-src/win/mgx_win_init.c \
-src/buf/mgx_buf_draw_line.c
+src/buf/mgx_buf.c               src/mgx_init.c                  src/win/mgx_win_draw.c \
+src/buf/mgx_buf_draw_line.c     src/mgx_lib_mlx.c               src/win/mgx_win_init.c \
+src/demo/liner.c                src/mgx_loop.c \
+src/mgx_free.c                  src/win/mgx_win_buf.c
 
 EXTERNAL_HEADERS = \
 ./lib/ft/inc/libft.h ./lib/ft/inc/printf.h \
