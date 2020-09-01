@@ -6,7 +6,7 @@
 #    By: kcharla <kcharla@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/16 11:36:42 by kcharla           #+#    #+#              #
-#    Updated: 2020/08/31 21:12:58 by kcharla          ###   ########.fr        #
+#    Updated: 2020/09/01 23:13:52 by kcharla          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,13 +60,13 @@ O_FILES = $(patsubst $(SRC_DIR)%.c, $(BUILD_DIR)%.o, $(SRC_FILES))
 SRC_DIRS = $(shell find $(SRC_DIR) -type d)
 BUILD_DIRS_REC = $(patsubst $(SRC_DIR)%, $(BUILD_DIR)%, $(SRC_DIRS))
 
-.PHONY: all clean fclean re liner headers
+.PHONY: all clean fclean re liner
 
 #---------------------------------   RULES   ----------------------------------#
 
 all: $(NAME)
 
-$(NAME): headers $(LIB_FT) $(LIB_MLX) $(BUILD_DIRS_REC) $(O_FILES)
+$(NAME): $(LINKED_HEADERS) $(LIB_FT) $(LIB_MLX) $(BUILD_DIRS_REC) $(O_FILES)
 	libtool -static -o $(NAME) $(LIB_FT) $(LIB_MLX) $(O_FILES)
 	ranlib $(NAME)
 
@@ -91,8 +91,9 @@ re: fclean all
 
 $(BUILD_DIRS_REC):
 	@mkdir -vp $(BUILD_DIRS_REC)
+	@ln -f $(EXTERNAL_HEADERS) ./inc/
 
-headers:
+$(LINKED_HEADERS):
 	ln -f $(EXTERNAL_HEADERS) ./inc/
 
 #----------------------------------  LIB_FT  ----------------------------------#
